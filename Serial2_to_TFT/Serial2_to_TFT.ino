@@ -43,7 +43,7 @@ int myHeight;
 void setup() 
 {
     Serial.begin(115200);//open serial via USB to PC on default port
-  Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2);
+  //Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2);
 
   pinMode(analogInPin, INPUT);   // Postavi pin senzora kao INPUT
   TFT.begin();                   // inicijalizacuija zaslona
@@ -51,20 +51,23 @@ void setup()
   myWidth  = TFT.width() ;       // ekran je širok
   myHeight = TFT.height();       // ekran je visok
   TFT.fillScreen(ILI9341_BLACK); // obojaj zaslon u crno
+  TFT.setTextColor(ILI9341_BLUE, ILI9341_BLACK);
+  TFT.setTextSize(5);
   TFT.print("Hi:");
+  Serial.print("Hi:");
 }
 
 void loop()
 {
-  /*for(int j = 0; j++ <= myWidth + 1; ) // petlja je brža uz sintaksu ugnježđene liste
+  for(int j = 0; j++ <= myWidth + 1; ) // petlja je brža uz sintaksu ugnježđene liste
   { // sporija sintaksa petlje izgleda // for(int j = 0; j <= myWidth + 1; j = j + 1)
-    TFT.drawFastVLine( j, 0, myHeight, ILI9341_BLACK);
+    //TFT.drawFastVLine( j, 0, myHeight, ILI9341_BLACK);
     // Pixel crtamo ugnježđivanjem listi od kojih je
     // analogRead(analogInPin)
     // najdulblje ugnježđena lista koja je element
     // map(analogRead(analogInPin), 0, 4095, myHeight - 1, 1)
     // liste, te je sve zajeno ugnježđeno u 
-    TFT.drawPixel(j, map(analogRead(analogInPin), 0, 4095, myHeight - 1, 1), ILI9341_YELLOW);
+    //TFT.drawPixel(j, map(analogRead(analogInPin), 0, 4095, myHeight - 1, 1), ILI9341_YELLOW);
     // Kada bismo za funkciju
     // analogRead(analogInPin)
     // odredili varijablu poput
@@ -72,10 +75,13 @@ void loop()
     // pa zatim taj n uvrstili u narednu funkciju kao
     // map(n, 0, 4095, myHeight - 1, 1)
     // program bi se izvodio duplo sporije
-  }*/
-    if (Serial2.available()) //check incoming on default serial (USB) from PC
+    if (Serial.available()) //check incoming on default serial (USB) from PC
       { 
-        TFT.print(Serial2.read());   // read it from UBS and send it to hSerial 
-      }
+        TFT.print(char(Serial.read()));   // read it from UBS and send it to hSerial 
+      } else {
+        TFT.setCursor(0,0); 
+        }
+  }
 
+  //TFT.fillScreen(ILI9341_BLACK); // obojaj zaslon u crno
 }
